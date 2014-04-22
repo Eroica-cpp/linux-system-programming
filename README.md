@@ -1,6 +1,6 @@
 Linux System Programing
 ======================================================
-This repo is used to store notes, code, and other relavant course materials for linux system programming.
+This repo is used to store notes, code, and other relevant course materials for linux system programming.
 
 Week #1 Unix Basic
 ----------------------
