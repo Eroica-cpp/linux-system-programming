@@ -9,9 +9,9 @@
 #include <signal.h>
 #include "clientinfo.h"
 
-#define FIFO_NAME "/tmp/sever_info"
+#define FIFO_NAME "/tmp/server_info"
 #define BUFF_SZ 100
-#define mypipename "1" // is it ok?
+char mypipename[BUFF_SZ];
 
 /* remove pipe if signaled. */
 void handler(int sig){
@@ -49,7 +49,7 @@ int main(int argc, char *argv[]){
 		printf("Could not open %s for write access.", FIFO_NAME);
 		exit(EXIT_FAILURE);
 	}
-
+	printf("line 52\n");
 	/* create my own FIFO*/
 	sprintf(mypipename, "/tmp/client%d_fifo", getpid());
 	res = mkfifo(mypipename, 0777);
@@ -64,7 +64,7 @@ int main(int argc, char *argv[]){
 		printf("Could not open %s for read only access.", FIFO_NAME);
 		exit(EXIT_FAILURE);
 	}
-
+	
 	/* construct client info */
 	strcpy(info.myfifo, mypipename);
 	info.leftarg = atoi(argv[1]);
