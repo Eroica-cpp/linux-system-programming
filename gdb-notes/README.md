@@ -13,4 +13,6 @@ A tutorial with vivid illustrations.
 Progress
 -------------
 2014年 05月 29日 星期四 20:51:48 HKT  
-reference #2 p12
+reference #2 p12  
+2014年 05月 30日 星期五 11:34:19 HKT  
+Done!
