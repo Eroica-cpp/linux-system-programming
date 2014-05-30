@@ -5,7 +5,7 @@
 typedef struct
 {
 	char myfifo[50];	// client's info name
-	int lefttarg;		// left argument of calculation
+	int leftarg;		// left argument of calculation
 	int rightarg;		// right argument of calculation
 	char op;			// operation: + - * /
 } CLIENTINFO, *CLIENTINFOPTR;

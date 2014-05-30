@@ -11,11 +11,12 @@
 
 #define FIFO_NAME "/tmp/sever_info"
 #define BUFF_SZ 100
+#define mypipename "1" // is it ok?
 
 /* remove pipe if signaled. */
 void handler(int sig){
-	unlink(mypipename)
-	exit(1)
+	unlink(mypipename);
+	exit(1);
 }
 
 int main(int argc, char *argv[]){
@@ -43,7 +44,7 @@ int main(int argc, char *argv[]){
 	}
 
 	/* open server fifo for write. */
-	fifo_fd = open(FIFO_NAME, O_WRONGLY);
+	fifo_fd = open(FIFO_NAME, O_WRONLY);
 	if (fifo_fd == -1){
 		printf("Could not open %s for write access.", FIFO_NAME);
 		exit(EXIT_FAILURE);
@@ -53,7 +54,7 @@ int main(int argc, char *argv[]){
 	sprintf(mypipename, "/tmp/client%d_fifo", getpid());
 	res = mkfifo(mypipename, 0777);
 	if (res != 0){
-		pritnf("FIFO %s was not created.", buffer);
+		printf("FIFO %s was not created.", buffer);
 		exit(EXIT_FAILURE);
 	}
 
@@ -65,7 +66,7 @@ int main(int argc, char *argv[]){
 	}
 
 	/* construct client info */
-	strcpy(info.mkfifo, mypipename);
+	strcpy(info.myfifo, mypipename);
 	info.leftarg = atoi(argv[1]);
 	info.op = argv[2][0];
 	info.rightarg = atoi(argv[3]);
