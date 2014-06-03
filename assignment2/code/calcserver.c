@@ -9,7 +9,8 @@
 #include <signal.h>
 #include "clientinfo.h"
 
-#define FIFO_NAME "/tmp/server_info"
+//#define FIFO_NAME "/tmp/server_info"
+#define FIFO_NAME "/media/disk/Dropbox/courseMaterials/semester6/linuxSystemProgramming_yuhongFeng/assignment2/code/litao2011190026/chat_app/data/server_info"
 #define BUFF_SZ 100
 
 void handler(int sig){
@@ -31,8 +32,8 @@ int calc(CLIENTINFOPTR info){
 int main(){
 	int res;
 	int i;
-	int fifo_fd, fd1;
-	CLIENTINFO info;
+	int fifo_fd, fd1, fd2;
+	CLIENTINFO info1, info2;
 	char buffer[BUFF_SZ];
 
 	/* handle some signals */
@@ -59,14 +60,23 @@ int main(){
 	printf("\nServer is raring to go!\n");
 
 	while(1) {
-		res = read(fifo_fd, &info, sizeof(CLIENTINFO));
+		// for client 1
+		res = read(fifo_fd, &info1, sizeof(CLIENTINFO));
 		if (res != 0){
-			printf("Client arrived!\n");
-			sprintf(buffer, "The result is %d\n", calc(&info));
-			fd1 = open(info.myfifo, O_WRONLY | O_NONBLOCK);
-			write(fd1, buffer, strlen(buffer) + 1);
-			close(fd1);
+			sprintf(buffer, "From %s:\n %s\n\n", info1.myfifo, info1.msg);
+			fd2 = open(info2.myfifo, O_WRONLY | O_NONBLOCK);
+			write(fd2, buffer, strlen(buffer) + 1);
+			close(fd2);			
 		}
+
+		// for client 2
+		res = read(fifo_fd, &info2, sizeof(CLIENTINFO));
+		if (res != 0){
+			sprintf(buffer, "From %s:\n %s\n\n", info2.myfifo, info2.msg);
+			fd1 = open(info1.myfifo, O_WRONLY | O_NONBLOCK);
+			write(fd1, buffer, strlen(buffer) + 1);
+			close(fd1);			
+		}		
 	}
 
 	exit(0);

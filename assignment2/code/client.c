@@ -9,13 +9,16 @@
 #include <signal.h>
 #include "clientinfo.h"
 
-#define FIFO_NAME "/tmp/server_info"
-#define BUFF_SZ 100
+//#define FIFO_NAME "/tmp/server_info"
+#define FIFO_NAME "/media/disk/Dropbox/courseMaterials/semester6/linuxSystemProgramming_yuhongFeng/assignment2/code/litao2011190026/chat_app/data/server_info"
+#define BUFF_SZ 1000
 char mypipename[BUFF_SZ];
+char message[BUFF_SZ];
 
 /* remove pipe if signaled. */
 void handler(int sig){
 	unlink(mypipename);
+	unlink(message);
 	exit(1);
 }
 
@@ -26,14 +29,20 @@ int main(int argc, char *argv[]){
 	CLIENTINFO info;
 	char buffer[BUFF_SZ];
 
+
 	/* handle some signals */
 	signal(SIGKILL, handler);
 	signal(SIGINT, handler);
 	signal(SIGTERM, handler);
 
 	/* check for proper command line */
-	if (argc != 4){
-		printf("Usage: %s op1 operation op2\n", argv[0]);
+	// if (argc != 4){
+	// 	printf("Usage: %s op1 operation op2\n", argv[0]);
+	// 	exit(1);
+	// }
+
+	if (argc <= 1){
+		printf("Usage: %s message\n", argv[0]);
 		exit(1);
 	}
 
@@ -49,9 +58,10 @@ int main(int argc, char *argv[]){
 		printf("Could not open %s for write access.", FIFO_NAME);
 		exit(EXIT_FAILURE);
 	}
-	printf("line 52\n");
+	
 	/* create my own FIFO*/
-	sprintf(mypipename, "/tmp/client%d_fifo", getpid());
+	//sprintf(mypipename, "/tmp/client%d_fifo", getpid());
+	sprintf(mypipename, "/media/disk/Dropbox/courseMaterials/semester6/linuxSystemProgramming_yuhongFeng/assignment2/code/litao2011190026/chat_app/data/client_fifo/client%d_fifo", getpid());
 	res = mkfifo(mypipename, 0777);
 	if (res != 0){
 		printf("FIFO %s was not created.", buffer);
@@ -67,9 +77,10 @@ int main(int argc, char *argv[]){
 	
 	/* construct client info */
 	strcpy(info.myfifo, mypipename);
-	info.leftarg = atoi(argv[1]);
-	info.op = argv[2][0];
-	info.rightarg = atoi(argv[3]);
+	// info.leftarg = atoi(argv[1]);
+	// info.op = argv[2][0];
+	// info.rightarg = atoi(argv[3]);
+	strcpy(info.msg, argv[1]);
 
 	/* write client info into server fifo */
 	write(fifo_fd, &info, sizeof(CLIENTINFO));
@@ -80,8 +91,8 @@ int main(int argc, char *argv[]){
 	while (1) {
 		res = read(my_fifo, buffer, BUFF_SZ);
 		if (res > 0){
-			printf("Received from server: %s\n", buffer);
-			break;
+			printf("Received from server: \n %s\n", buffer);
+			//break;
 		}
 	}
 
