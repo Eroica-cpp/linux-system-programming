@@ -1,2 +1,7 @@
 *.out
+*.md~
 assignment*
+/slides/
+/reference/
+/test/
+*.pdf
