@@ -8,7 +8,7 @@ int* thread(void* arg){
 	pthread_t newthread;
 
 	newthread = pthread_self();
-	printf("This is a new thread, thread id = %u\n", newthread);
+	printf("This is a new thread, thread id = %lu\n", newthread);
 
 	return NULL;
 }
@@ -17,7 +17,7 @@ int main(void){
 	
 	pthread_t thread_id;
 
-	printf("main thread, id = %u\n", pthread_self());
+	printf("main thread, id = %lu\n", pthread_self());
 	if (pthread_create(&thread_id, NULL, (void *)thread, NULL) != 0){
 		printf("thread creation failed.\n");
 		exit(1);
