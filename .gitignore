@@ -1,6 +1,7 @@
 *.out
 *.md~
-assignment*
+#assignment*
+/assignment[12]/
 /slides/
 /reference/
 /test/
