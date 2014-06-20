@@ -1,3 +1,8 @@
+// code for problem 1 assignment 3
+// Author: Tao Li
+// Email: eroicacmcs@gmail.com
+// Date: Jun 20, 2014
+
 #include <pthread.h>
 #include <stdio.h>
 #include <string.h>
