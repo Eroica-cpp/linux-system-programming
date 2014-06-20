@@ -6,6 +6,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <pthread.h>
 
 void *thread_function(void *arg);
