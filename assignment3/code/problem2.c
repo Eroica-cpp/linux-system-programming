@@ -62,6 +62,13 @@ void *thread_function(void *arg){
 	
 	int print_count2 = 0;
 
+	if (pthread_mutex_lock(&work_mutex) != 0){
+		perror("Lock failed\n");
+		exit(1);
+	} else {
+		printf("function lock.\n");
+	}
+
 	while (print_count2 ++ <= 5) {
 		if (run_now == 2){
 			printf("function thread is runing\n");
@@ -71,6 +78,13 @@ void *thread_function(void *arg){
 			sleep(1);
 		}
 	}
+
+	if (pthread_mutex_unlock(&work_mutex) != 0){
+		perror("Unlock failed\n");
+		exit(1);
+	} else {
+		printf("function unlock.\n");
+	}	
 
 	pthread_exit(NULL);
 }
