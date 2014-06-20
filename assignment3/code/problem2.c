@@ -10,6 +10,7 @@
 #include <pthread.h>
 
 void *thread_function(void *arg);
+pthread_mutex_t work_mutex;
 
 int run_now = 1;	// shared resource
 int main()
@@ -17,9 +18,21 @@ int main()
 	int print_count1 = 0;
 	pthread_t a_thread;
 
-	if(pthread_create(&a_thread, NULL, thread_function, NULL) != 0){
+	if (pthread_mutex_init(&work_mutex, NULL) != 0){
+		perror("Mutex init failed\n");
+		exit(1);
+	}
+
+	if (pthread_create(&a_thread, NULL, thread_function, NULL) != 0){
 		perror("Thread creation failed!\n");
 		exit(1);
+	}
+
+	if (pthread_mutex_lock(&work_mutex) != 0){
+		perror("Lock failed\n");
+		exit(1);
+	} else {
+		printf("Main lock.\n");
 	}
 
 	while (print_count1++ <= 5) {
@@ -31,7 +44,16 @@ int main()
 			sleep(1);
 		}
 	}
+
+	if (pthread_mutex_unlock(&work_mutex) != 0){
+		perror("Unlock failed\n");
+		exit(1);
+	} else {
+		printf("Main unlock.\n");
+	}	
+
 	pthread_join(a_thread, NULL);
+	pthread_mutex_destroy(&work_mutex);
 	exit(0);
 
 }
